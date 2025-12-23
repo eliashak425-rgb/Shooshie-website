@@ -298,41 +298,75 @@ export default function RotatingEarth({ width = 800, height = 600, className = "
       render()
     }
 
-    // Touch handlers for mobile
-    const handleTouchStart = (event: TouchEvent) => {
-      if (!event.touches[0]) return
-      event.preventDefault() // Prevent scroll/refresh
-      autoRotate = false
-      const startX = event.touches[0].clientX
-      const startY = event.touches[0].clientY
-      const startRotation: [number, number, number] = [...rotation]
+    // Touch handlers for mobile - rotation + pinch zoom
+    let lastTouchX = 0
+    let lastTouchY = 0
+    let lastPinchDist = 0
+    let isTouching = false
 
-      const handleTouchMove = (moveEvent: TouchEvent) => {
-        if (!moveEvent.touches[0]) return
-        moveEvent.preventDefault()
+    const getTouchDistance = (touches: TouchList) => {
+      if (touches.length < 2) return 0
+      const t1 = touches[0]!
+      const t2 = touches[1]!
+      const dx = t1.clientX - t2.clientX
+      const dy = t1.clientY - t2.clientY
+      return Math.sqrt(dx * dx + dy * dy)
+    }
+
+    const handleTouchStart = (event: TouchEvent) => {
+      event.preventDefault()
+      autoRotate = false
+      isTouching = true
+      
+      if (event.touches.length === 1 && event.touches[0]) {
+        lastTouchX = event.touches[0].clientX
+        lastTouchY = event.touches[0].clientY
+      } else if (event.touches.length === 2) {
+        lastPinchDist = getTouchDistance(event.touches)
+      }
+    }
+
+    const handleTouchMove = (event: TouchEvent) => {
+      if (!isTouching) return
+      event.preventDefault()
+
+      if (event.touches.length === 1 && event.touches[0]) {
+        // Single finger - rotate
+        const touch = event.touches[0]
         const sensitivity = 0.5
-        const dx = moveEvent.touches[0].clientX - startX
-        const dy = moveEvent.touches[0].clientY - startY
-        rotation[0] = startRotation[0] + dx * sensitivity
-        rotation[1] = startRotation[1] - dy * sensitivity
+        const dx = touch.clientX - lastTouchX
+        const dy = touch.clientY - lastTouchY
+        rotation[0] += dx * sensitivity
+        rotation[1] -= dy * sensitivity
         rotation[1] = Math.max(-90, Math.min(90, rotation[1]))
         projection.rotate(rotation)
+        lastTouchX = touch.clientX
+        lastTouchY = touch.clientY
         render()
+      } else if (event.touches.length === 2) {
+        // Pinch - zoom
+        const newDist = getTouchDistance(event.touches)
+        if (lastPinchDist > 0) {
+          const zoomFactor = newDist / lastPinchDist
+          const newRadius = Math.max(radius * 0.5, Math.min(radius * 2.5, projection.scale() * zoomFactor))
+          projection.scale(newRadius)
+          render()
+        }
+        lastPinchDist = newDist
       }
+    }
 
-      const handleTouchEnd = () => {
-        document.removeEventListener("touchmove", handleTouchMove)
-        document.removeEventListener("touchend", handleTouchEnd)
-        setTimeout(() => { autoRotate = true }, 10)
-      }
-
-      document.addEventListener("touchmove", handleTouchMove, { passive: false })
-      document.addEventListener("touchend", handleTouchEnd)
+    const handleTouchEnd = () => {
+      isTouching = false
+      lastPinchDist = 0
+      setTimeout(() => { autoRotate = true }, 500)
     }
 
     canvas.addEventListener("mousedown", handleMouseDown)
     canvas.addEventListener("wheel", handleWheel)
     canvas.addEventListener("touchstart", handleTouchStart, { passive: false })
+    canvas.addEventListener("touchmove", handleTouchMove, { passive: false })
+    canvas.addEventListener("touchend", handleTouchEnd)
 
     loadWorldData()
 
@@ -341,6 +375,8 @@ export default function RotatingEarth({ width = 800, height = 600, className = "
       canvas.removeEventListener("mousedown", handleMouseDown)
       canvas.removeEventListener("wheel", handleWheel)
       canvas.removeEventListener("touchstart", handleTouchStart)
+      canvas.removeEventListener("touchmove", handleTouchMove)
+      canvas.removeEventListener("touchend", handleTouchEnd)
     }
   }, [width, height])
 
