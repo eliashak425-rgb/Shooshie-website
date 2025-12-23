@@ -44,13 +44,13 @@ export default function Hero() {
                 </span>
               </div>
             </div>
-            <h1 className="mb-4 font-serif text-4xl leading-[0.9] tracking-tight text-white sm:mb-8 sm:text-5xl md:text-7xl lg:text-8xl">
+            <h1 className="mb-4 font-serif text-5xl leading-[0.9] tracking-tight text-white sm:mb-8 sm:text-6xl md:text-8xl lg:text-9xl">
               Hello, I&apos;m <br />
               <span className="font-light italic text-purple-400 neon-text">
                 Eli Isaac
               </span>
             </h1>
-            <p className="mb-6 max-w-xl text-base font-light leading-relaxed text-zinc-400 sm:mb-8 sm:text-lg">
+            <p className="mb-6 max-w-xl text-lg font-light leading-relaxed text-zinc-400 sm:mb-8 sm:text-xl">
               A frontend web developer & editor based in Belgium. I craft
               beautiful, user-friendly websites that help businesses stand out
               online.
