@@ -40,6 +40,8 @@ export default function HomePage() {
         <MusicPlayer autoPlay />
         <main>
           <Hero />
+          {/* Solid background starts after hero to cover watermark when scrolling */}
+          <div className="bg-[#0a0a0b]">
           <AnimatedSection>
             <GeometricShowcase />
           </AnimatedSection>
@@ -58,8 +60,9 @@ export default function HomePage() {
           <AnimatedSection delay={100}>
             <Contact />
           </AnimatedSection>
+          <Footer />
+          </div>
         </main>
-        <Footer />
       </div>
     </>
   );
