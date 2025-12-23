@@ -46,12 +46,22 @@ const ASMRStaticBackground: React.FC<ASMRStaticBackgroundProps> = ({
         this.reset();
       }
 
+      baseVx: number = 0;
+      baseVy: number = 0;
+      floatPhase: number = 0;
+      floatSpeed: number = 0;
+
       reset() {
         this.x = Math.random() * width;
         this.y = Math.random() * height;
         this.size = Math.random() * 1.5 + 0.5;
-        this.vx = (Math.random() - 0.5) * 0.2;
-        this.vy = (Math.random() - 0.5) * 0.2;
+        this.vx = (Math.random() - 0.5) * 0.3;
+        this.vy = (Math.random() - 0.5) * 0.3;
+        // Gentle passive drift direction
+        this.baseVx = (Math.random() - 0.5) * 0.4;
+        this.baseVy = (Math.random() - 0.5) * 0.4;
+        this.floatPhase = Math.random() * Math.PI * 2;
+        this.floatSpeed = Math.random() * 0.02 + 0.01;
         // Mix of purple and charcoal
         const isPurple = Math.random() > 0.65;
         this.color = isPurple ? "168, 85, 247" : "70, 70, 80";
@@ -79,14 +89,19 @@ const ASMRStaticBackground: React.FC<ASMRStaticBackgroundProps> = ({
           this.frictionGlow *= 0.9;
         }
 
-        this.x += this.vx;
-        this.y += this.vy;
+        // Passive floating motion - always active
+        this.floatPhase += this.floatSpeed;
+        const floatX = Math.sin(this.floatPhase) * 0.3;
+        const floatY = Math.cos(this.floatPhase * 0.7) * 0.2;
+
+        this.x += this.vx + this.baseVx + floatX;
+        this.y += this.vy + this.baseVy + floatY;
 
         this.vx *= 0.96;
         this.vy *= 0.96;
 
-        this.vx += (Math.random() - 0.5) * 0.03;
-        this.vy += (Math.random() - 0.5) * 0.03;
+        this.vx += (Math.random() - 0.5) * 0.05;
+        this.vy += (Math.random() - 0.5) * 0.05;
 
         this.rotation += this.rotationSpeed;
 

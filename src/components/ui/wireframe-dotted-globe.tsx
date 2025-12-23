@@ -298,8 +298,41 @@ export default function RotatingEarth({ width = 800, height = 600, className = "
       render()
     }
 
+    // Touch handlers for mobile
+    const handleTouchStart = (event: TouchEvent) => {
+      if (!event.touches[0]) return
+      event.preventDefault() // Prevent scroll/refresh
+      autoRotate = false
+      const startX = event.touches[0].clientX
+      const startY = event.touches[0].clientY
+      const startRotation: [number, number, number] = [...rotation]
+
+      const handleTouchMove = (moveEvent: TouchEvent) => {
+        if (!moveEvent.touches[0]) return
+        moveEvent.preventDefault()
+        const sensitivity = 0.5
+        const dx = moveEvent.touches[0].clientX - startX
+        const dy = moveEvent.touches[0].clientY - startY
+        rotation[0] = startRotation[0] + dx * sensitivity
+        rotation[1] = startRotation[1] - dy * sensitivity
+        rotation[1] = Math.max(-90, Math.min(90, rotation[1]))
+        projection.rotate(rotation)
+        render()
+      }
+
+      const handleTouchEnd = () => {
+        document.removeEventListener("touchmove", handleTouchMove)
+        document.removeEventListener("touchend", handleTouchEnd)
+        setTimeout(() => { autoRotate = true }, 10)
+      }
+
+      document.addEventListener("touchmove", handleTouchMove, { passive: false })
+      document.addEventListener("touchend", handleTouchEnd)
+    }
+
     canvas.addEventListener("mousedown", handleMouseDown)
     canvas.addEventListener("wheel", handleWheel)
+    canvas.addEventListener("touchstart", handleTouchStart, { passive: false })
 
     loadWorldData()
 
@@ -307,6 +340,7 @@ export default function RotatingEarth({ width = 800, height = 600, className = "
       rotationTimer.stop()
       canvas.removeEventListener("mousedown", handleMouseDown)
       canvas.removeEventListener("wheel", handleWheel)
+      canvas.removeEventListener("touchstart", handleTouchStart)
     }
   }, [width, height])
 
@@ -331,10 +365,11 @@ export default function RotatingEarth({ width = 800, height = 600, className = "
       <canvas
         ref={canvasRef}
         className="rounded-2xl cursor-grab active:cursor-grabbing"
-        style={{ maxWidth: "100%", height: "auto" }}
+        style={{ maxWidth: "100%", height: "auto", touchAction: "none" }}
       />
       <div className="absolute bottom-4 left-1/2 -translate-x-1/2 text-xs text-zinc-600 px-3 py-1.5 rounded-full bg-zinc-900/50 backdrop-blur-sm border border-zinc-800">
-        Drag to rotate • Scroll to zoom
+        <span className="hidden sm:inline">Drag to rotate • Scroll to zoom</span>
+        <span className="sm:hidden">Touch to rotate</span>
       </div>
     </div>
   )
