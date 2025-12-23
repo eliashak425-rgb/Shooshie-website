@@ -24,11 +24,14 @@ export default function HomePage() {
           loading="lazy"
           title="Background shader"
         />
-        {/* Gradient overlays to completely hide watermark (bottom-right corner) */}
-        <div className="pointer-events-none absolute bottom-0 left-0 right-0 h-40 bg-gradient-to-t from-[#0a0a0b] via-[#0a0a0b]/90 to-transparent" />
-        <div className="pointer-events-none absolute bottom-0 left-0 right-0 h-24 bg-[#0a0a0b]" />
-        <div className="pointer-events-none absolute bottom-0 right-0 h-48 w-64 bg-gradient-to-tl from-[#0a0a0b] via-[#0a0a0b]/80 to-transparent" />
-        <div className="pointer-events-none absolute bottom-0 right-0 h-20 w-48 bg-[#0a0a0b]" />
+        {/* Solid black bars to completely hide watermark */}
+        <div className="pointer-events-none absolute bottom-0 left-0 right-0 h-16 bg-[#0a0a0b]" />
+        <div className="pointer-events-none absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-[#0a0a0b] to-transparent" />
+        {/* Cover all corners where watermark might appear */}
+        <div className="pointer-events-none absolute bottom-0 left-0 h-24 w-72 bg-[#0a0a0b]" />
+        <div className="pointer-events-none absolute bottom-0 right-0 h-24 w-72 bg-[#0a0a0b]" />
+        {/* Edge gradients */}
+        <div className="pointer-events-none absolute bottom-0 left-0 right-0 top-0 bg-gradient-to-r from-[#0a0a0b]/30 via-transparent to-[#0a0a0b]/30" />
       </div>
       
       {/* Content layer - pointer-events-none allows shader interaction in empty areas */}
