@@ -67,11 +67,12 @@ export default function ParticleCanvas() {
       const geometry = new THREE.BufferGeometry();
       const torusKnot = new THREE.TorusKnotGeometry(1.3, 0.45, 80, 12);
 
+      const posAttr = torusKnot.attributes.position!;
       for (let i = 0; i < particleCount; i++) {
-        const vertexIndex = i % torusKnot.attributes.position.count;
-        positions[i * 3] = torusKnot.attributes.position.getX(vertexIndex);
-        positions[i * 3 + 1] = torusKnot.attributes.position.getY(vertexIndex);
-        positions[i * 3 + 2] = torusKnot.attributes.position.getZ(vertexIndex);
+        const vertexIndex = i % posAttr.count;
+        positions[i * 3] = posAttr.getX(vertexIndex);
+        positions[i * 3 + 1] = posAttr.getY(vertexIndex);
+        positions[i * 3 + 2] = posAttr.getZ(vertexIndex);
 
         // Muted purple
         colors[i * 3] = 0.45;

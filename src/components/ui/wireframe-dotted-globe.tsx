@@ -47,8 +47,10 @@ export default function RotatingEarth({ width = 800, height = 600, className = "
       const [x, y] = point
       let inside = false
       for (let i = 0, j = polygon.length - 1; i < polygon.length; j = i++) {
-        const [xi, yi] = polygon[i]
-        const [xj, yj] = polygon[j]
+        const pi = polygon[i]!
+        const pj = polygon[j]!
+        const [xi, yi] = [pi[0]!, pi[1]!]
+        const [xj, yj] = [pj[0]!, pj[1]!]
         if (yi > y !== yj > y && x < ((xj - xi) * (y - yi)) / (yj - yi) + xi) {
           inside = !inside
         }

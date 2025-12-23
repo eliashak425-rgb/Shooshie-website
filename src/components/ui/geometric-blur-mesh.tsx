@@ -485,8 +485,9 @@ export default function GeometricBlurMesh() {
             const canvas = canvasRef.current;
             if (!canvas) return;
             const rect = canvas.getBoundingClientRect();
-            const clientX = 'touches' in e ? e.touches[0].clientX : e.clientX;
-            const clientY = 'touches' in e ? e.touches[0].clientY : e.clientY;
+            const touch = 'touches' in e ? e.touches[0] : null;
+            const clientX = touch ? touch.clientX : (e as MouseEvent).clientX;
+            const clientY = touch ? touch.clientY : (e as MouseEvent).clientY;
             mouseRef.current = { x: clientX - rect.left, y: clientY - rect.top };
         };
         window.addEventListener('mousemove', handleMouseMove);
@@ -548,7 +549,7 @@ export default function GeometricBlurMesh() {
             <canvas ref={canvasRef} className="w-full h-full" />
             <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2 pointer-events-none text-center">
                 <div className="text-purple-400/60 text-xs font-light tracking-widest">
-                    {shapes[currentShape].toUpperCase()}
+                    {(shapes[currentShape] ?? "").toUpperCase()}
                 </div>
                 <div className="text-purple-400/30 text-[10px] font-light mt-1 tracking-wide">
                     CLICK TO SWITCH SHAPE

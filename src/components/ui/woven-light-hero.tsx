@@ -123,11 +123,12 @@ const WovenCanvas = () => {
     const geometry = new THREE.BufferGeometry();
     const torusKnot = new THREE.TorusKnotGeometry(1.5, 0.5, 200, 32);
 
+    const posAttr = torusKnot.attributes.position!;
     for (let i = 0; i < particleCount; i++) {
-        const vertexIndex = i % torusKnot.attributes.position.count;
-        const x = torusKnot.attributes.position.getX(vertexIndex);
-        const y = torusKnot.attributes.position.getY(vertexIndex);
-        const z = torusKnot.attributes.position.getZ(vertexIndex);
+        const vertexIndex = i % posAttr.count;
+        const x = posAttr.getX(vertexIndex);
+        const y = posAttr.getY(vertexIndex);
+        const z = posAttr.getZ(vertexIndex);
         
         positions[i * 3] = x;
         positions[i * 3 + 1] = y;
@@ -178,9 +179,9 @@ const WovenCanvas = () => {
             const iy = i * 3 + 1;
             const iz = i * 3 + 2;
 
-            const currentPos = new THREE.Vector3(positions[ix], positions[iy], positions[iz]);
-            const originalPos = new THREE.Vector3(originalPositions[ix], originalPositions[iy], originalPositions[iz]);
-            const velocity = new THREE.Vector3(velocities[ix], velocities[iy], velocities[iz]);
+            const currentPos = new THREE.Vector3(positions[ix]!, positions[iy]!, positions[iz]!);
+            const originalPos = new THREE.Vector3(originalPositions[ix]!, originalPositions[iy]!, originalPositions[iz]!);
+            const velocity = new THREE.Vector3(velocities[ix]!, velocities[iy]!, velocities[iz]!);
 
             const dist = currentPos.distanceTo(mouseWorld);
             if (dist < 1.5) {
@@ -196,15 +197,15 @@ const WovenCanvas = () => {
             // Damping
             velocity.multiplyScalar(0.95);
 
-            positions[ix] += velocity.x;
-            positions[iy] += velocity.y;
-            positions[iz] += velocity.z;
+            positions[ix] = positions[ix]! + velocity.x;
+            positions[iy] = positions[iy]! + velocity.y;
+            positions[iz] = positions[iz]! + velocity.z;
             
             velocities[ix] = velocity.x;
             velocities[iy] = velocity.y;
             velocities[iz] = velocity.z;
         }
-        geometry.attributes.position.needsUpdate = true;
+        geometry.attributes.position!.needsUpdate = true;
 
         points.rotation.y = elapsedTime * 0.05;
         renderer.render(scene, camera);
