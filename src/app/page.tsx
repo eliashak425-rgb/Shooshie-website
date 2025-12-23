@@ -15,42 +15,48 @@ import MusicPlayer from "~/components/MusicPlayer";
 export default function HomePage() {
   return (
     <>
-      {/* Unicorn Studio Shader Background */}
+      {/* Unicorn Studio Shader Background - interactive layer */}
       <div className="fixed inset-0 z-0">
         <iframe
           src="https://www.unicorn.studio/embed/N45lpJuTcAnB7hkRmv54"
-          className="h-full w-full border-0 opacity-40"
+          className="h-full w-full border-0 opacity-50"
           style={{ filter: "hue-rotate(270deg)" }}
           loading="lazy"
           title="Background shader"
         />
-        {/* Gradient overlay to hide watermark */}
-        <div className="pointer-events-none absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-[#0a0a0b] to-transparent" />
+        {/* Gradient overlays to hide watermark */}
+        <div className="pointer-events-none absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-[#0a0a0b] via-[#0a0a0b]/80 to-transparent" />
+        <div className="pointer-events-none absolute bottom-0 left-0 right-0 h-16 bg-[#0a0a0b]" />
       </div>
       
-      <div className="relative z-10">
-        <Navbar />
-        <MusicPlayer autoPlay />
+      {/* Content layer - pointer-events-none so shader gets mouse, but children override */}
+      <div className="pointer-events-none relative z-10">
+        <div className="pointer-events-auto">
+          <Navbar />
+        </div>
+        <div className="pointer-events-auto">
+          <MusicPlayer autoPlay />
+        </div>
         <main>
-        <Hero />
-        <AnimatedSection>
-          <GeometricShowcase />
-        </AnimatedSection>
-        <AnimatedSection delay={100}>
-          <GlobeSection />
-        </AnimatedSection>
-        <AnimatedSection delay={50}>
-          <Skills />
-        </AnimatedSection>
-        <AnimatedSection delay={100}>
-          <About />
-        </AnimatedSection>
-        <AnimatedSection delay={50}>
-          <Projects />
-        </AnimatedSection>
-        <AnimatedSection delay={100}>
-          <Contact />
-        </AnimatedSection>
+          <Hero />
+          <AnimatedSection>
+            <GeometricShowcase />
+          </AnimatedSection>
+          <AnimatedSection delay={100}>
+            <GlobeSection />
+          </AnimatedSection>
+          <AnimatedSection delay={50}>
+            <Skills />
+          </AnimatedSection>
+          <AnimatedSection delay={100}>
+            <About />
+          </AnimatedSection>
+          <AnimatedSection delay={50}>
+            <Projects />
+          </AnimatedSection>
+          <AnimatedSection delay={100}>
+            <Contact />
+          </AnimatedSection>
         </main>
         <Footer />
       </div>
