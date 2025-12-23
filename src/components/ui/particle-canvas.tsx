@@ -124,13 +124,14 @@ export default function ParticleCanvas() {
         isDragging = false;
       };
 
-      // Touch handlers (mobile)
+      // Touch handlers (mobile) - prevent scroll/refresh while rotating
       const handleTouchMove = (event: TouchEvent) => {
         if (isDragging && event.touches[0]) {
+          event.preventDefault(); // Prevent scrolling while rotating
           const touch = event.touches[0];
           const deltaX = touch.clientX - previousMousePosition.x;
           const deltaY = touch.clientY - previousMousePosition.y;
-          targetRotationY += deltaX * 0.008; // Slightly faster on touch
+          targetRotationY += deltaX * 0.008;
           targetRotationX += deltaY * 0.008;
           previousMousePosition = { x: touch.clientX, y: touch.clientY };
         }
@@ -138,6 +139,7 @@ export default function ParticleCanvas() {
 
       const handleTouchStart = (event: TouchEvent) => {
         if (event.touches[0]) {
+          event.preventDefault(); // Prevent pull-to-refresh
           isDragging = true;
           previousMousePosition = { x: event.touches[0].clientX, y: event.touches[0].clientY };
         }
@@ -148,9 +150,10 @@ export default function ParticleCanvas() {
       };
 
       // Add event listeners based on device type
+      // passive: false required to allow preventDefault()
       if (isMobile) {
-        currentMount.addEventListener("touchmove", handleTouchMove, { passive: true });
-        currentMount.addEventListener("touchstart", handleTouchStart, { passive: true });
+        currentMount.addEventListener("touchmove", handleTouchMove, { passive: false });
+        currentMount.addEventListener("touchstart", handleTouchStart, { passive: false });
         currentMount.addEventListener("touchend", handleTouchEnd);
       } else {
         currentMount.addEventListener("mousemove", handleMouseMove);
@@ -236,6 +239,7 @@ export default function ParticleCanvas() {
       style={{
         opacity: isReady ? 1 : 0,
         transition: isReady ? 'opacity 0.3s ease-out' : 'none',
+        touchAction: 'none', // Prevent scroll/zoom/refresh on touch
       }}
     />
   );
