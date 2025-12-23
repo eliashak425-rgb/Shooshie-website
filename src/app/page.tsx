@@ -15,11 +15,11 @@ import MusicPlayer from "~/components/MusicPlayer";
 export default function HomePage() {
   return (
     <>
-      {/* Unicorn Studio Shader Background - hidden on mobile for performance */}
-      <div className="fixed inset-0 z-0 hidden md:block">
+      {/* Unicorn Studio Shader Background */}
+      <div className="fixed inset-0 z-0">
         <iframe
           src="https://www.unicorn.studio/embed/N45lpJuTcAnB7hkRmv54"
-          className="h-full w-full border-0 opacity-50"
+          className="h-full w-full border-0 opacity-40 md:opacity-50"
           style={{ filter: "hue-rotate(270deg)" }}
           loading="lazy"
           title="Background shader"
