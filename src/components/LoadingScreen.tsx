@@ -66,7 +66,7 @@ export default function LoadingScreen({ children }: LoadingScreenProps) {
         return;
       }
 
-      const asset = assets[assetIndex];
+      const asset = assets[assetIndex]!;
       const steps = 8;
       const stepDelay = asset.delay / steps;
       const stepIncrement = asset.weight / steps;
