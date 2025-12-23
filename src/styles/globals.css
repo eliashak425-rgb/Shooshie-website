@@ -1,0 +1,126 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-serif: var(--font-serif), ui-serif, Georgia, serif;
+  
+  /* Black & Neon Purple Palette */
+  --color-void: #0a0a0b;
+  --color-night: #111113;
+  --color-dark: #18181b;
+  --color-charcoal: #27272a;
+  --color-zinc: #3f3f46;
+  --color-steel: #71717a;
+  --color-silver: #a1a1aa;
+  --color-light: #e4e4e7;
+  
+  /* Neon Purple */
+  --color-neon: #a855f7;
+  --color-neon-bright: #c084fc;
+  --color-neon-dim: #9333ea;
+  --color-neon-dark: #7c3aed;
+  --color-neon-glow: rgba(168, 85, 247, 0.5);
+  
+  --animate-fade-in: fadeIn 1s ease-out forwards;
+  --animate-glow: glow 2s ease-in-out infinite alternate;
+  
+  @keyframes fadeIn {
+    0% {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  @keyframes glow {
+    0% {
+      box-shadow: 0 0 20px rgba(168, 85, 247, 0.3);
+    }
+    100% {
+      box-shadow: 0 0 30px rgba(168, 85, 247, 0.6);
+    }
+  }
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #111113;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #a855f7;
+  border-radius: 3px;
+}
+
+/* Grid Patterns */
+.bg-grid-pattern {
+  background-image: linear-gradient(to right, rgba(168, 85, 247, 0.1) 1px, transparent 1px),
+                    linear-gradient(to bottom, rgba(168, 85, 247, 0.1) 1px, transparent 1px);
+  background-size: 40px 40px;
+  mask-image: linear-gradient(to bottom, black 40%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to bottom, black 40%, transparent 100%);
+}
+
+.bg-grid-pattern-dark {
+  background-image: linear-gradient(to right, rgba(168, 85, 247, 0.08) 1px, transparent 1px),
+                    linear-gradient(to bottom, rgba(168, 85, 247, 0.08) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+/* Animation Classes */
+.animate-fade-in {
+  animation: fadeIn 1s ease-out forwards;
+}
+
+/* Neon glow effect */
+.neon-glow {
+  box-shadow: 0 0 20px rgba(168, 85, 247, 0.4);
+}
+
+.neon-text {
+  text-shadow: 0 0 20px rgba(168, 85, 247, 0.6);
+}
+
+/* Line Clamp */
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Selection */
+::selection {
+  background-color: #a855f7;
+  color: white;
+}
+
+/* GPU-accelerated scroll animations */
+.scroll-animate {
+  will-change: transform, opacity;
+}
+
+.scroll-animate-initial {
+  opacity: 0;
+  transform: translateY(30px);
+}
+
+.scroll-animate-visible {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+/* Stagger delays */
+.delay-100 { transition-delay: 100ms; }
+.delay-200 { transition-delay: 200ms; }
+.delay-300 { transition-delay: 300ms; }
+.delay-400 { transition-delay: 400ms; }
+.delay-500 { transition-delay: 500ms; }
