@@ -29,14 +29,10 @@ export default function HomePage() {
         <div className="pointer-events-none absolute bottom-0 left-0 right-0 h-16 bg-[#0a0a0b]" />
       </div>
       
-      {/* Content layer - pointer-events-none so shader gets mouse, but children override */}
+      {/* Content layer - pointer-events-none allows shader interaction in empty areas */}
       <div className="pointer-events-none relative z-10">
-        <div className="pointer-events-auto">
-          <Navbar />
-        </div>
-        <div className="pointer-events-auto">
-          <MusicPlayer autoPlay />
-        </div>
+        <Navbar />
+        <MusicPlayer autoPlay />
         <main>
           <Hero />
           <AnimatedSection>

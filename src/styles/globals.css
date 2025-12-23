@@ -125,7 +125,20 @@
 .delay-400 { transition-delay: 400ms; }
 .delay-500 { transition-delay: 500ms; }
 
-/* Make interactive elements always clickable even when parent has pointer-events-none */
-a, button, input, textarea, select, [role="button"], .pointer-events-auto {
-  pointer-events: auto !important;
+/* Interactive elements override pointer-events-none from parent */
+/* Only truly clickable elements - not structural ones */
+nav,
+a,
+button,
+input,
+textarea,
+select,
+form,
+article,
+canvas,
+[role="button"],
+.interactive,
+.pointer-events-auto {
+  pointer-events: auto;
 }
+
