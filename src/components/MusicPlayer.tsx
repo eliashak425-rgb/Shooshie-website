@@ -186,8 +186,8 @@ export default function MusicPlayer({ autoPlay = false }: MusicPlayerProps) {
         )}
       </div>
 
-      {/* Track info with progress bar */}
-      <div className="flex items-center gap-3 rounded-full border border-purple-500/20 bg-black/50 px-3 py-2 backdrop-blur-sm">
+      {/* Track info with progress bar - hidden on small screens */}
+      <div className="hidden items-center gap-3 rounded-full border border-purple-500/20 bg-black/50 px-3 py-2 backdrop-blur-sm sm:flex">
         {/* Animated bars */}
         {isPlaying && (
           <div className="flex gap-0.5">

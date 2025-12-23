@@ -66,9 +66,10 @@ export default function Hero() {
 
           {/* RIGHT SIDE - 3D Particle Animation */}
           <div className="relative lg:col-span-5">
-            <div className="relative aspect-square w-full">
+            <div className="relative aspect-square w-full max-w-[280px] mx-auto md:max-w-none">
               <ParticleCanvas />
-              <div className="pointer-events-none absolute left-1/2 top-8 flex -translate-x-1/2 items-center gap-1.5 text-[10px] text-purple-400 drop-shadow-[0_0_8px_rgba(168,85,247,0.8)]">
+              {/* Hide drag hint on mobile since rotation is auto-only */}
+              <div className="pointer-events-none absolute left-1/2 top-8 hidden -translate-x-1/2 items-center gap-1.5 text-[10px] text-purple-400 drop-shadow-[0_0_8px_rgba(168,85,247,0.8)] md:flex">
                 <svg
                   className="h-3 w-3"
                   viewBox="0 0 24 24"

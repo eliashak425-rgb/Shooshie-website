@@ -15,8 +15,8 @@ import MusicPlayer from "~/components/MusicPlayer";
 export default function HomePage() {
   return (
     <>
-      {/* Unicorn Studio Shader Background - interactive layer */}
-      <div className="fixed inset-0 z-0">
+      {/* Unicorn Studio Shader Background - hidden on mobile for performance */}
+      <div className="fixed inset-0 z-0 hidden md:block">
         <iframe
           src="https://www.unicorn.studio/embed/N45lpJuTcAnB7hkRmv54"
           className="h-full w-full border-0 opacity-50"

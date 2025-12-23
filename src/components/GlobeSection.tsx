@@ -28,7 +28,16 @@ export default function GlobeSection() {
         </div>
 
         <div className="flex justify-center">
-          <RotatingEarth width={700} height={500} />
+          {/* Responsive size: smaller on mobile */}
+          <div className="block sm:hidden">
+            <RotatingEarth width={320} height={280} />
+          </div>
+          <div className="hidden sm:block md:hidden">
+            <RotatingEarth width={500} height={400} />
+          </div>
+          <div className="hidden md:block">
+            <RotatingEarth width={700} height={500} />
+          </div>
         </div>
       </div>
     </section>

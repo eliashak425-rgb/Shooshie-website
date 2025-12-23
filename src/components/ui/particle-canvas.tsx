@@ -51,7 +51,10 @@ export default function ParticleCanvas() {
       let frameCount = 0;
       const WARMUP_FRAMES = 15; // ~250ms at 60fps
 
-      // Mouse drag rotation
+      // Check if mobile
+      const isMobile = "ontouchstart" in window || window.innerWidth < 768;
+
+      // Mouse drag rotation (desktop only)
       let isDragging = false;
       let previousMousePosition = { x: 0, y: 0 };
       let targetRotationX = 0;
@@ -59,8 +62,8 @@ export default function ParticleCanvas() {
       let currentRotationX = 0;
       let currentRotationY = 0;
 
-      // Minimal particle count for fast load
-      const particleCount = 2500;
+      // Reduced particles on mobile for performance
+      const particleCount = isMobile ? 1200 : 2500;
       const positions = new Float32Array(particleCount * 3);
       const colors = new Float32Array(particleCount * 3);
 
@@ -120,10 +123,13 @@ export default function ParticleCanvas() {
         isDragging = false;
       };
 
-      currentMount.addEventListener("mousemove", handleMouseMove);
-      currentMount.addEventListener("mousedown", handleMouseDown);
-      currentMount.addEventListener("mouseup", handleMouseUp);
-      currentMount.addEventListener("mouseleave", handleMouseLeave);
+      // Only add drag listeners on desktop
+      if (!isMobile) {
+        currentMount.addEventListener("mousemove", handleMouseMove);
+        currentMount.addEventListener("mousedown", handleMouseDown);
+        currentMount.addEventListener("mouseup", handleMouseUp);
+        currentMount.addEventListener("mouseleave", handleMouseLeave);
+      }
 
       const animate = () => {
         requestAnimationFrame(animate);
@@ -164,10 +170,12 @@ export default function ParticleCanvas() {
       // Store cleanup function
       cleanupRef.current = () => {
         window.removeEventListener("resize", handleResize);
-        currentMount.removeEventListener("mousemove", handleMouseMove);
-        currentMount.removeEventListener("mousedown", handleMouseDown);
-        currentMount.removeEventListener("mouseup", handleMouseUp);
-        currentMount.removeEventListener("mouseleave", handleMouseLeave);
+        if (!isMobile) {
+          currentMount.removeEventListener("mousemove", handleMouseMove);
+          currentMount.removeEventListener("mousedown", handleMouseDown);
+          currentMount.removeEventListener("mouseup", handleMouseUp);
+          currentMount.removeEventListener("mouseleave", handleMouseLeave);
+        }
         if (currentMount.contains(renderer.domElement)) {
           currentMount.removeChild(renderer.domElement);
         }
