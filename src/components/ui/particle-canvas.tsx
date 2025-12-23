@@ -100,6 +100,7 @@ export default function ParticleCanvas() {
       // Dispose the source geometry
       torusKnot.dispose();
 
+      // Mouse handlers (desktop)
       const handleMouseMove = (event: MouseEvent) => {
         if (isDragging) {
           const deltaX = event.clientX - previousMousePosition.x;
@@ -123,8 +124,35 @@ export default function ParticleCanvas() {
         isDragging = false;
       };
 
-      // Only add drag listeners on desktop
-      if (!isMobile) {
+      // Touch handlers (mobile)
+      const handleTouchMove = (event: TouchEvent) => {
+        if (isDragging && event.touches[0]) {
+          const touch = event.touches[0];
+          const deltaX = touch.clientX - previousMousePosition.x;
+          const deltaY = touch.clientY - previousMousePosition.y;
+          targetRotationY += deltaX * 0.008; // Slightly faster on touch
+          targetRotationX += deltaY * 0.008;
+          previousMousePosition = { x: touch.clientX, y: touch.clientY };
+        }
+      };
+
+      const handleTouchStart = (event: TouchEvent) => {
+        if (event.touches[0]) {
+          isDragging = true;
+          previousMousePosition = { x: event.touches[0].clientX, y: event.touches[0].clientY };
+        }
+      };
+
+      const handleTouchEnd = () => {
+        isDragging = false;
+      };
+
+      // Add event listeners based on device type
+      if (isMobile) {
+        currentMount.addEventListener("touchmove", handleTouchMove, { passive: true });
+        currentMount.addEventListener("touchstart", handleTouchStart, { passive: true });
+        currentMount.addEventListener("touchend", handleTouchEnd);
+      } else {
         currentMount.addEventListener("mousemove", handleMouseMove);
         currentMount.addEventListener("mousedown", handleMouseDown);
         currentMount.addEventListener("mouseup", handleMouseUp);
@@ -170,7 +198,11 @@ export default function ParticleCanvas() {
       // Store cleanup function
       cleanupRef.current = () => {
         window.removeEventListener("resize", handleResize);
-        if (!isMobile) {
+        if (isMobile) {
+          currentMount.removeEventListener("touchmove", handleTouchMove);
+          currentMount.removeEventListener("touchstart", handleTouchStart);
+          currentMount.removeEventListener("touchend", handleTouchEnd);
+        } else {
           currentMount.removeEventListener("mousemove", handleMouseMove);
           currentMount.removeEventListener("mousedown", handleMouseDown);
           currentMount.removeEventListener("mouseup", handleMouseUp);
