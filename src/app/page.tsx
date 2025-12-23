@@ -16,17 +16,22 @@ export default function HomePage() {
   return (
     <>
       {/* Unicorn Studio Shader Background */}
-      <iframe
-        src="https://www.unicorn.studio/embed/N45lpJuTcAnB7hkRmv54"
-        className="pointer-events-none fixed inset-0 z-0 h-full w-full border-0 opacity-30"
-        style={{ filter: "hue-rotate(270deg)" }}
-        loading="lazy"
-        title="Background shader"
-      />
+      <div className="fixed inset-0 z-0">
+        <iframe
+          src="https://www.unicorn.studio/embed/N45lpJuTcAnB7hkRmv54"
+          className="h-full w-full border-0 opacity-40"
+          style={{ filter: "hue-rotate(270deg)" }}
+          loading="lazy"
+          title="Background shader"
+        />
+        {/* Gradient overlay to hide watermark */}
+        <div className="pointer-events-none absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-[#0a0a0b] to-transparent" />
+      </div>
       
-      <Navbar />
-      <MusicPlayer autoPlay />
-      <main className="relative z-10">
+      <div className="relative z-10">
+        <Navbar />
+        <MusicPlayer autoPlay />
+        <main>
         <Hero />
         <AnimatedSection>
           <GeometricShowcase />
@@ -46,8 +51,9 @@ export default function HomePage() {
         <AnimatedSection delay={100}>
           <Contact />
         </AnimatedSection>
-      </main>
-      <Footer />
+        </main>
+        <Footer />
+      </div>
     </>
   );
 }
