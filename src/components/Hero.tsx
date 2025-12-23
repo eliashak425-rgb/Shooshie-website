@@ -12,10 +12,8 @@ const ParticleCanvas = dynamic(() => import("./ui/particle-canvas"), {
 export default function Hero() {
   return (
     <header className="relative min-h-screen overflow-hidden">
-      {/* Strong gradient overlay to hide watermark at bottom */}
+      {/* Aesthetic gradient overlay */}
       <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#0a0a0b]" />
-      <div className="pointer-events-none absolute bottom-0 left-0 right-0 h-48 bg-gradient-to-t from-[#0a0a0b] via-[#0a0a0b]/95 to-transparent" />
-      <div className="pointer-events-none absolute bottom-0 left-0 right-0 h-32 bg-[#0a0a0b]" />
       
       <div className="relative z-10 flex min-h-screen flex-col">
         {/* Main Content */}
