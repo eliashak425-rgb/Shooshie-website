@@ -91,14 +91,17 @@ export default function LoadingScreen({ children }: LoadingScreenProps) {
     return () => clearTimeout(timer);
   }, [phase]);
 
-  // Phase 2: Mouse movement tracking (2 seconds of significant movement)
+  // Phase 2: Mouse/touch interaction
   useEffect(() => {
     if (phase !== "interact") return;
 
     let accumulated = 0;
-    const REQUIRED_TIME = 2000; // 2 seconds of movement
-    const MOVEMENT_THRESHOLD = 5; // pixels per tick to count as "moving"
-    const DECAY_RATE = 30; // ms to decay when not moving
+    const isMobile = "ontouchstart" in window;
+    
+    // Much easier on mobile
+    const REQUIRED_TIME = isMobile ? 800 : 2000; // 0.8s on mobile, 2s on desktop
+    const MOVEMENT_THRESHOLD = isMobile ? 2 : 5; // Lower threshold on mobile
+    const DECAY_RATE = isMobile ? 10 : 30; // Slower decay on mobile
 
     const handleMouseMove = (e: MouseEvent | TouchEvent) => {
       const clientX = "touches" in e ? e.touches[0]?.clientX ?? 0 : e.clientX;
@@ -112,15 +115,24 @@ export default function LoadingScreen({ children }: LoadingScreenProps) {
       lastMousePos.current = { x: clientX, y: clientY };
     };
 
+    // Tap to enter on mobile - each tap adds 25%
+    const handleTap = () => {
+      accumulated += REQUIRED_TIME * 0.35; // Each tap = 35% progress
+      setMouseTime(Math.min(accumulated / REQUIRED_TIME * 100, 100));
+      
+      if (accumulated >= REQUIRED_TIME) {
+        setPhase("done");
+        setTimeout(() => setHideLoader(true), 600);
+      }
+    };
+
     const tick = () => {
       const movement = movementAccumulator.current;
-      movementAccumulator.current = 0; // Reset for next tick
+      movementAccumulator.current = 0;
       
       if (movement > MOVEMENT_THRESHOLD) {
-        // Significant movement - add time
         accumulated += 50;
       } else {
-        // Not moving enough - decay progress
         accumulated = Math.max(0, accumulated - DECAY_RATE);
       }
       
@@ -137,11 +149,13 @@ export default function LoadingScreen({ children }: LoadingScreenProps) {
 
     window.addEventListener("mousemove", handleMouseMove);
     window.addEventListener("touchmove", handleMouseMove);
+    window.addEventListener("touchstart", handleTap);
     mouseTimerRef.current = setTimeout(tick, 50);
 
     return () => {
       window.removeEventListener("mousemove", handleMouseMove);
       window.removeEventListener("touchmove", handleMouseMove);
+      window.removeEventListener("touchstart", handleTap);
       if (mouseTimerRef.current) clearTimeout(mouseTimerRef.current);
     };
   }, [phase]);
@@ -197,7 +211,8 @@ export default function LoadingScreen({ children }: LoadingScreenProps) {
                       >
                         <path d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5" />
                       </svg>
-                      Move mouse to enter
+                      <span className="hidden sm:inline">Move mouse to enter</span>
+                      <span className="sm:hidden">Tap to enter</span>
                     </span>
                     <span className="font-mono text-purple-400">{Math.round(mouseTime)}%</span>
                   </>
