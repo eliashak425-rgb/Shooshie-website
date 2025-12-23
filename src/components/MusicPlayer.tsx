@@ -14,6 +14,8 @@ export default function MusicPlayer({ autoPlay = false }: MusicPlayerProps) {
   const [isReady, setIsReady] = useState(false);
   const [progress, setProgress] = useState(0);
   const [duration, setDuration] = useState(0);
+  const [volume, setVolume] = useState(DEFAULT_VOLUME);
+  const [showVolume, setShowVolume] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const initializedRef = useRef(false);
   const hasAutoPlayedRef = useRef(false);
@@ -68,11 +70,24 @@ export default function MusicPlayer({ autoPlay = false }: MusicPlayerProps) {
     if (!audioRef.current) return;
 
     if (isMuted) {
-      audioRef.current.volume = DEFAULT_VOLUME;
+      audioRef.current.volume = volume;
       setIsMuted(false);
     } else {
       audioRef.current.volume = 0;
       setIsMuted(true);
+    }
+  };
+
+  const handleVolumeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newVolume = parseFloat(e.target.value);
+    setVolume(newVolume);
+    if (audioRef.current) {
+      audioRef.current.volume = newVolume;
+    }
+    if (newVolume === 0) {
+      setIsMuted(true);
+    } else if (isMuted) {
+      setIsMuted(false);
     }
   };
 
@@ -129,28 +144,50 @@ export default function MusicPlayer({ autoPlay = false }: MusicPlayerProps) {
         )}
       </button>
 
-      {/* Mute/Unmute Button */}
-      <button
-        onClick={toggleMute}
-        className="flex h-10 w-10 items-center justify-center rounded-full border border-purple-500/30 bg-black/50 text-purple-400 backdrop-blur-sm transition-all hover:border-purple-400 hover:bg-purple-500/10 hover:text-purple-300"
-        aria-label={isMuted ? "Unmute" : "Mute"}
+      {/* Volume Control */}
+      <div 
+        className="relative"
+        onMouseEnter={() => setShowVolume(true)}
+        onMouseLeave={() => setShowVolume(false)}
       >
-        {isMuted ? (
-          <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <path d="M11 5L6 9H2v6h4l5 4V5z" />
-            <line x1="23" y1="9" x2="17" y2="15" />
-            <line x1="17" y1="9" x2="23" y2="15" />
-          </svg>
-        ) : (
-          <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <path d="M11 5L6 9H2v6h4l5 4V5z" />
-            <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07" />
-          </svg>
+        <button
+          onClick={toggleMute}
+          className="flex h-10 w-10 items-center justify-center rounded-full border border-purple-500/30 bg-black/50 text-purple-400 backdrop-blur-sm transition-all hover:border-purple-400 hover:bg-purple-500/10 hover:text-purple-300"
+          aria-label={isMuted ? "Unmute" : "Mute"}
+        >
+          {isMuted || volume === 0 ? (
+            <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <path d="M11 5L6 9H2v6h4l5 4V5z" />
+              <line x1="23" y1="9" x2="17" y2="15" />
+              <line x1="17" y1="9" x2="23" y2="15" />
+            </svg>
+          ) : (
+            <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <path d="M11 5L6 9H2v6h4l5 4V5z" />
+              <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07" />
+            </svg>
+          )}
+        </button>
+        
+        {/* Volume Slider - appears on hover */}
+        {showVolume && (
+          <div className="absolute bottom-full left-1/2 mb-2 -translate-x-1/2 rounded-lg border border-purple-500/30 bg-black/80 p-3 backdrop-blur-sm">
+            <input
+              type="range"
+              min="0"
+              max="1"
+              step="0.01"
+              value={isMuted ? 0 : volume}
+              onChange={handleVolumeChange}
+              className="h-20 w-2 cursor-pointer appearance-none rounded-full bg-zinc-700 accent-purple-500"
+              style={{ writingMode: "vertical-lr", direction: "rtl" }}
+            />
+          </div>
         )}
-      </button>
+      </div>
 
       {/* Track info with progress bar */}
-      <div className="hidden items-center gap-3 rounded-full border border-purple-500/20 bg-black/50 px-3 py-2 backdrop-blur-sm sm:flex">
+      <div className="flex items-center gap-3 rounded-full border border-purple-500/20 bg-black/50 px-3 py-2 backdrop-blur-sm">
         {/* Animated bars */}
         {isPlaying && (
           <div className="flex gap-0.5">

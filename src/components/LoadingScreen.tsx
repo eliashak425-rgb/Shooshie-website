@@ -26,7 +26,8 @@ export default function LoadingScreen({ children }: LoadingScreenProps) {
   const [hideLoader, setHideLoader] = useState(false);
   const [contentVisible, setContentVisible] = useState(false);
   const mouseTimerRef = useRef<NodeJS.Timeout | null>(null);
-  const isMouseMoving = useRef(false);
+  const lastMousePos = useRef({ x: 0, y: 0 });
+  const movementAccumulator = useRef(0);
 
   // Preload Three.js immediately when component mounts
   useEffect(() => {
@@ -90,30 +91,47 @@ export default function LoadingScreen({ children }: LoadingScreenProps) {
     return () => clearTimeout(timer);
   }, [phase]);
 
-  // Phase 2: Mouse movement tracking (2 seconds)
+  // Phase 2: Mouse movement tracking (2 seconds of significant movement)
   useEffect(() => {
     if (phase !== "interact") return;
 
     let accumulated = 0;
-    const REQUIRED_TIME = 2000; // 2 seconds
+    const REQUIRED_TIME = 2000; // 2 seconds of movement
+    const MOVEMENT_THRESHOLD = 5; // pixels per tick to count as "moving"
+    const DECAY_RATE = 30; // ms to decay when not moving
 
-    const handleMouseMove = () => {
-      if (!isMouseMoving.current) {
-        isMouseMoving.current = true;
-      }
+    const handleMouseMove = (e: MouseEvent | TouchEvent) => {
+      const clientX = "touches" in e ? e.touches[0]?.clientX ?? 0 : e.clientX;
+      const clientY = "touches" in e ? e.touches[0]?.clientY ?? 0 : e.clientY;
+      
+      const dx = clientX - lastMousePos.current.x;
+      const dy = clientY - lastMousePos.current.y;
+      const distance = Math.sqrt(dx * dx + dy * dy);
+      
+      movementAccumulator.current += distance;
+      lastMousePos.current = { x: clientX, y: clientY };
     };
 
     const tick = () => {
-      if (isMouseMoving.current) {
+      const movement = movementAccumulator.current;
+      movementAccumulator.current = 0; // Reset for next tick
+      
+      if (movement > MOVEMENT_THRESHOLD) {
+        // Significant movement - add time
         accumulated += 50;
-        setMouseTime(Math.min(accumulated / REQUIRED_TIME * 100, 100));
-
-        if (accumulated >= REQUIRED_TIME) {
-          setPhase("done");
-          setTimeout(() => setHideLoader(true), 600);
-          return;
-        }
+      } else {
+        // Not moving enough - decay progress
+        accumulated = Math.max(0, accumulated - DECAY_RATE);
       }
+      
+      setMouseTime(Math.min(accumulated / REQUIRED_TIME * 100, 100));
+
+      if (accumulated >= REQUIRED_TIME) {
+        setPhase("done");
+        setTimeout(() => setHideLoader(true), 600);
+        return;
+      }
+      
       mouseTimerRef.current = setTimeout(tick, 50);
     };
 
