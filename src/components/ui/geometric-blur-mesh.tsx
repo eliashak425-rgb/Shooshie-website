@@ -364,7 +364,7 @@ export default function GeometricBlurMesh() {
     const mouseDampRef = useRef({ x: 0, y: 0 });
     const [currentShape, setCurrentShape] = useState(0);
     const [isVisible, setIsVisible] = useState(false);
-    const animationFrameRef = useRef<number>();
+    const animationFrameRef = useRef<number | null>(null);
     const glRef = useRef<WebGLRenderingContext | null>(null);
     const programRef = useRef<WebGLProgram | null>(null);
     const uniformsRef = useRef<Record<string, WebGLUniformLocation | null>>({});
