@@ -77,24 +77,10 @@ export default function ParticleCanvas() {
         positions[i * 3 + 1] = posAttr.getY(vertexIndex);
         positions[i * 3 + 2] = posAttr.getZ(vertexIndex);
 
-        // Neon purple/magenta colors - toned down for additive blending
-        const colorVariation = Math.random();
-        if (colorVariation < 0.5) {
-          // Neon purple
-          colors[i * 3] = 0.55;
-          colors[i * 3 + 1] = 0.1;
-          colors[i * 3 + 2] = 0.75;
-        } else if (colorVariation < 0.85) {
-          // Electric violet
-          colors[i * 3] = 0.45;
-          colors[i * 3 + 1] = 0.15;
-          colors[i * 3 + 2] = 0.85;
-        } else {
-          // Cyan accent (small amount)
-          colors[i * 3] = 0.2;
-          colors[i * 3 + 1] = 0.5;
-          colors[i * 3 + 2] = 0.7;
-        }
+        // Solid purple - consistent color
+        colors[i * 3] = 0.6;      // R
+        colors[i * 3 + 1] = 0.2;  // G
+        colors[i * 3 + 2] = 0.9;  // B - nice purple
       }
 
       geometry.setAttribute("position", new THREE.BufferAttribute(positions, 3));
@@ -104,8 +90,8 @@ export default function ParticleCanvas() {
         size: isMobile ? 0.045 : 0.038,
         vertexColors: true,
         transparent: true,
-        opacity: 0.95,
-        blending: THREE.AdditiveBlending, // Additive blending for neon glow effect
+        opacity: 0.9,
+        blending: THREE.NormalBlending,
       });
 
       const points = new THREE.Points(geometry, material);
