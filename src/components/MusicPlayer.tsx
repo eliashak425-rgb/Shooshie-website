@@ -20,6 +20,22 @@ export default function MusicPlayer({ autoPlay = false }: MusicPlayerProps) {
   const initializedRef = useRef(false);
   const hasAutoPlayedRef = useRef(false);
   const progressBarRef = useRef<HTMLDivElement>(null);
+  const volumeHideTimeout = useRef<NodeJS.Timeout | null>(null);
+
+  const handleVolumeMouseEnter = () => {
+    if (volumeHideTimeout.current) {
+      clearTimeout(volumeHideTimeout.current);
+      volumeHideTimeout.current = null;
+    }
+    setShowVolume(true);
+  };
+
+  const handleVolumeMouseLeave = () => {
+    // Delay hiding by 500ms so user can reach the slider
+    volumeHideTimeout.current = setTimeout(() => {
+      setShowVolume(false);
+    }, 500);
+  };
 
   useEffect(() => {
     // Prevent double initialization in Strict Mode
@@ -147,8 +163,8 @@ export default function MusicPlayer({ autoPlay = false }: MusicPlayerProps) {
       {/* Volume Control */}
       <div 
         className="relative"
-        onMouseEnter={() => setShowVolume(true)}
-        onMouseLeave={() => setShowVolume(false)}
+        onMouseEnter={handleVolumeMouseEnter}
+        onMouseLeave={handleVolumeMouseLeave}
       >
         <button
           onClick={toggleMute}

@@ -24,10 +24,11 @@ export default function HomePage() {
           loading="lazy"
           title="Background shader"
         />
-        {/* Fixed solid bar to hide watermark - always visible */}
-        <div className="pointer-events-none absolute bottom-0 left-0 right-0 h-20 bg-[#0a0a0b]" />
-        <div className="pointer-events-none absolute bottom-0 left-0 right-0 h-40 bg-gradient-to-t from-[#0a0a0b] to-transparent" />
       </div>
+      
+      {/* Watermark cover - separate fixed layer to survive scroll bounce */}
+      <div className="pointer-events-none fixed bottom-0 left-0 right-0 z-[1] h-32 bg-[#0a0a0b] sm:h-24" />
+      <div className="pointer-events-none fixed bottom-24 left-0 right-0 z-[1] h-24 bg-gradient-to-t from-[#0a0a0b] to-transparent sm:bottom-20 sm:h-20" />
       
       {/* Content layer - pointer-events-none allows shader interaction in empty areas */}
       <div className="pointer-events-none relative z-10">
