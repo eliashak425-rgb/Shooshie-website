@@ -27,9 +27,9 @@ export default function HomePage() {
       </div>
       
       {/* Watermark cover - separate fixed layer to survive scroll bounce */}
-      {/* More aggressive coverage for mobile */}
-      <div className="pointer-events-none fixed bottom-0 left-0 right-0 z-[1] h-20 bg-[#0a0a0b] sm:h-24" />
-      <div className="pointer-events-none fixed bottom-20 left-0 right-0 z-[1] h-24 bg-gradient-to-t from-[#0a0a0b] to-transparent sm:bottom-24 sm:h-20" />
+      {/* Tall solid bar + gradient to fully hide watermark on all devices */}
+      <div className="pointer-events-none fixed bottom-0 left-0 right-0 z-[1] h-28 bg-[#0a0a0b] sm:h-24" />
+      <div className="pointer-events-none fixed bottom-28 left-0 right-0 z-[1] h-32 bg-gradient-to-t from-[#0a0a0b] to-transparent sm:bottom-24 sm:h-24" />
       
       {/* Content layer - pointer-events-none allows shader interaction in empty areas */}
       <div className="pointer-events-none relative z-10">
