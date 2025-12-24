@@ -4,12 +4,22 @@ import { ArrowDownRight, ArrowDown, Github, Mail } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import dynamic from "next/dynamic";
+import { useState, useEffect } from "react";
 
 const ParticleCanvas = dynamic(() => import("./ui/particle-canvas"), {
   ssr: false,
 });
 
 export default function Hero() {
+  const [isMobile, setIsMobile] = useState<boolean | null>(null);
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 1024);
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
+
   const stats = [
     { value: "3+", label: "Years Experience" },
     { value: "25+", label: "Projects Completed" },
@@ -25,7 +35,8 @@ export default function Hero() {
       <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#0a0a0b]" />
 
       {/* ==================== DESKTOP LAYOUT (lg and up) ==================== */}
-      <div className="relative z-10 mx-auto hidden max-w-7xl px-6 pb-32 pt-48 lg:block">
+      {isMobile === false && (
+      <div className="relative z-10 mx-auto max-w-7xl px-6 pb-32 pt-48">
         <div className="grid grid-cols-12 items-center gap-8">
           {/* LEFT SIDE - Content */}
           <div className="col-span-7">
@@ -111,9 +122,11 @@ export default function Hero() {
           </div>
         </div>
       </div>
+      )}
 
       {/* ==================== MOBILE LAYOUT (below lg) ==================== */}
-      <div className="relative z-10 flex min-h-screen flex-col lg:hidden">
+      {isMobile === true && (
+      <div className="relative z-10 flex min-h-screen flex-col">
         {/* Main Content */}
         <div className="flex flex-1 flex-col items-center justify-center px-6 py-20">
           {/* Profile Section */}
@@ -214,6 +227,7 @@ export default function Hero() {
           </div>
         </div>
       </div>
+      )}
     </header>
   );
 }
