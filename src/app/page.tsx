@@ -11,11 +11,10 @@ import {
 } from "~/components";
 import AnimatedSection from "~/components/AnimatedSection";
 import MusicPlayer from "~/components/MusicPlayer";
-import VideoRedirect from "~/components/VideoRedirect";
 
 export default function HomePage() {
   return (
-    <VideoRedirect>
+    <>
       {/* Unicorn Studio Shader Background */}
       <div className="fixed inset-0 z-0">
         <iframe
@@ -62,6 +61,6 @@ export default function HomePage() {
           </div>
         </main>
       </div>
-    </VideoRedirect>
+    </>
   );
 }
