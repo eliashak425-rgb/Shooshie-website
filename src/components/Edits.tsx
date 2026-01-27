@@ -86,6 +86,36 @@ export default function Edits() {
   return (
     <section id="edits" className="border-t border-purple-500/20 bg-[#0a0a0b] px-6 py-24">
       <div className="mx-auto max-w-7xl">
+        {/* Experience Banner */}
+        <div className="mb-16 rounded-2xl border border-purple-500/20 bg-gradient-to-br from-purple-500/5 to-transparent p-8 md:p-12">
+          <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
+            <div>
+              <h3 className="mb-3 font-serif text-2xl text-white md:text-3xl">
+                4+ Years of Editing Experience
+              </h3>
+              <p className="max-w-2xl text-sm leading-relaxed text-zinc-400 md:text-base">
+                Proficient in the full Adobe Creative Suite workflow including{" "}
+                <span className="text-purple-400">After Effects</span>,{" "}
+                <span className="text-purple-400">Premiere Pro</span>, and{" "}
+                <span className="text-purple-400">Photoshop</span>. 
+                From motion graphics and visual effects to color grading and sound design — 
+                I bring ideas to life with precision and creativity.
+              </p>
+            </div>
+            <div className="flex flex-wrap gap-3">
+              <span className="rounded-full border border-purple-500/30 bg-purple-500/10 px-4 py-2 text-xs font-medium text-purple-300">
+                After Effects
+              </span>
+              <span className="rounded-full border border-purple-500/30 bg-purple-500/10 px-4 py-2 text-xs font-medium text-purple-300">
+                Premiere Pro
+              </span>
+              <span className="rounded-full border border-purple-500/30 bg-purple-500/10 px-4 py-2 text-xs font-medium text-purple-300">
+                Photoshop
+              </span>
+            </div>
+          </div>
+        </div>
+
         {/* Header */}
         <div className="mb-12 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
           <div>
