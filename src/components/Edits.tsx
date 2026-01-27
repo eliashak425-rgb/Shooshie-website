@@ -3,29 +3,28 @@
 import { Play, ExternalLink } from "lucide-react";
 import { useState } from "react";
 
-// Add your video edits here - supports YouTube, Vimeo, or direct video URLs
+// Video edits showcase
 const edits = [
   {
-    title: "Demo Edit 1",
-    description: "A showcase of motion graphics and transitions.",
-    // YouTube video ID or full URL
-    videoId: "dQw4w9WgXcQ", // Replace with your actual video ID
+    title: "Motion Graphics Short",
+    description: "A quick, punchy motion graphics edit showcasing dynamic visuals and smooth transitions.",
+    videoId: "9kTjH_wnTP0",
+    platform: "youtube" as const,
+    category: "Short Edit",
+  },
+  {
+    title: "Motion Graphics Showcase",
+    description: "A comprehensive showcase of motion graphics techniques and visual effects.",
+    videoId: "zBGre9nl2ik",
     platform: "youtube" as const,
     category: "Motion Graphics",
   },
   {
-    title: "Demo Edit 2", 
-    description: "Cinematic color grading and visual effects.",
-    videoId: "dQw4w9WgXcQ", // Replace with your actual video ID
+    title: "Long Form Production",
+    description: "Full-length video production combining storytelling with motion graphics elements.",
+    videoId: "xPg-VTVfRBU",
     platform: "youtube" as const,
-    category: "Color Grading",
-  },
-  {
-    title: "Demo Edit 3",
-    description: "Fast-paced editing with dynamic sound design.",
-    videoId: "dQw4w9WgXcQ", // Replace with your actual video ID
-    platform: "youtube" as const,
-    category: "Music Video",
+    category: "Long Form",
   },
 ];
 
