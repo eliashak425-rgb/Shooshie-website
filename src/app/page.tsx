@@ -21,19 +21,19 @@ export default function HomePage() {
       <main>
         <Hero />
         <AnimatedSection>
+          <Edits />
+        </AnimatedSection>
+        <AnimatedSection delay={100}>
           <GeometricShowcase />
         </AnimatedSection>
-        <AnimatedSection delay={100}>
+        <AnimatedSection delay={50}>
           <GlobeSection />
         </AnimatedSection>
-        <AnimatedSection delay={50}>
+        <AnimatedSection delay={100}>
           <Skills />
         </AnimatedSection>
-        <AnimatedSection delay={100}>
-          <About />
-        </AnimatedSection>
         <AnimatedSection delay={50}>
-          <Edits />
+          <About />
         </AnimatedSection>
         <AnimatedSection delay={100}>
           <Projects />
