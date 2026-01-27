@@ -9,8 +9,8 @@ interface RotatingEarthProps {
   className?: string
 }
 
-// Belgium coordinates
-const BELGIUM_COORDS: [number, number] = [4.4699, 50.5039]
+// Israel coordinates (Tel Aviv area)
+const ISRAEL_COORDS: [number, number] = [34.7818, 32.0853]
 
 export default function RotatingEarth({ width = 800, height = 600, className = "" }: RotatingEarthProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
@@ -163,55 +163,55 @@ export default function RotatingEarth({ width = 800, height = 600, className = "
           }
         })
 
-        // Draw Belgium marker - PURPLE NEON
-        const belgiumProjected = projection(BELGIUM_COORDS)
-        if (belgiumProjected) {
+        // Draw Israel marker - PURPLE NEON
+        const israelProjected = projection(ISRAEL_COORDS)
+        if (israelProjected) {
           const rotation = projection.rotate()
           const center: [number, number] = [-rotation[0], -rotation[1]]
-          const distance = d3.geoDistance(BELGIUM_COORDS, center)
+          const distance = d3.geoDistance(ISRAEL_COORDS, center)
           
           if (distance < Math.PI / 2) {
             // Outer glow
             context.beginPath()
-            context.arc(belgiumProjected[0], belgiumProjected[1], 20 * scaleFactor, 0, 2 * Math.PI)
+            context.arc(israelProjected[0], israelProjected[1], 20 * scaleFactor, 0, 2 * Math.PI)
             context.fillStyle = "rgba(168, 85, 247, 0.15)"
             context.fill()
             
             // Middle glow
             context.beginPath()
-            context.arc(belgiumProjected[0], belgiumProjected[1], 12 * scaleFactor, 0, 2 * Math.PI)
+            context.arc(israelProjected[0], israelProjected[1], 12 * scaleFactor, 0, 2 * Math.PI)
             context.fillStyle = "rgba(168, 85, 247, 0.3)"
             context.fill()
             
             // Inner glow
             context.beginPath()
-            context.arc(belgiumProjected[0], belgiumProjected[1], 6 * scaleFactor, 0, 2 * Math.PI)
+            context.arc(israelProjected[0], israelProjected[1], 6 * scaleFactor, 0, 2 * Math.PI)
             context.fillStyle = "rgba(168, 85, 247, 0.5)"
             context.fill()
             
             // Core point
             context.beginPath()
-            context.arc(belgiumProjected[0], belgiumProjected[1], 4 * scaleFactor, 0, 2 * Math.PI)
+            context.arc(israelProjected[0], israelProjected[1], 4 * scaleFactor, 0, 2 * Math.PI)
             context.fillStyle = "#a855f7"
             context.shadowColor = "#a855f7"
             context.shadowBlur = 20
             context.fill()
             context.shadowBlur = 0
 
-            // Label "Belgium"
+            // Label "Israel"
             context.font = `bold ${14 * scaleFactor}px Inter, sans-serif`
             context.fillStyle = "#e9d5ff"
             context.textAlign = "center"
             context.shadowColor = "#a855f7"
             context.shadowBlur = 15
-            context.fillText("Belgium", belgiumProjected[0], belgiumProjected[1] - 28 * scaleFactor)
+            context.fillText("Israel", israelProjected[0], israelProjected[1] - 28 * scaleFactor)
             context.shadowBlur = 0
             
             // Subtle underline
-            const textWidth = context.measureText("Belgium").width
+            const textWidth = context.measureText("Israel").width
             context.beginPath()
-            context.moveTo(belgiumProjected[0] - textWidth / 2, belgiumProjected[1] - 24 * scaleFactor)
-            context.lineTo(belgiumProjected[0] + textWidth / 2, belgiumProjected[1] - 24 * scaleFactor)
+            context.moveTo(israelProjected[0] - textWidth / 2, israelProjected[1] - 24 * scaleFactor)
+            context.lineTo(israelProjected[0] + textWidth / 2, israelProjected[1] - 24 * scaleFactor)
             context.strokeStyle = "#a855f7"
             context.lineWidth = 1
             context.globalAlpha = 0.5
@@ -246,8 +246,8 @@ export default function RotatingEarth({ width = 800, height = 600, className = "
       }
     }
 
-    // Start centered on Europe/Belgium
-    const rotation: [number, number, number] = [-4.5, -50, 0]
+    // Start centered on Middle East/Israel
+    const rotation: [number, number, number] = [-35, -32, 0]
     let autoRotate = true
     const rotationSpeed = 0.15
 

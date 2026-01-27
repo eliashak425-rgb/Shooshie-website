@@ -20,10 +20,10 @@ export default function GlobeSection() {
             Location
           </span>
           <h2 className="font-serif text-4xl tracking-tight text-white md:text-5xl">
-            Based in <span className="text-purple-400">Belgium</span>
+            Based in <span className="text-purple-400">Israel</span>
           </h2>
           <p className="mx-auto mt-4 max-w-lg text-sm font-light leading-relaxed text-zinc-500">
-            Working with clients worldwide from the heart of Europe.
+            Working with clients worldwide from the Middle East.
           </p>
         </div>
 
