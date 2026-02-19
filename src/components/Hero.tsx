@@ -67,7 +67,7 @@ export default function Hero() {
             </h1>
 
             <p className="mb-8 max-w-xl text-lg font-light leading-relaxed text-zinc-400">
-              A frontend web developer & editor based in Israel. I craft
+              A frontend web developer & editor based in Germany. I craft
               beautiful, user-friendly websites that help businesses stand out
               online.
             </p>
@@ -117,7 +117,7 @@ export default function Hero() {
           <div className="flex items-end justify-end">
             <span className="text-right text-xs text-zinc-500">
               Based in <br />
-              <span className="text-purple-400">Israel</span>
+              <span className="text-purple-400">Germany</span>
             </span>
           </div>
         </div>
@@ -160,7 +160,7 @@ export default function Hero() {
               Frontend Developer & Editor
             </p>
             <p className="mt-1 text-sm text-zinc-600">
-              Based in Israel
+              Based in Germany
             </p>
           </div>
 
